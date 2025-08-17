@@ -272,11 +272,21 @@ class KenyaHOAApp {
         // Store token and user data
         AuthUtils.storeAuthData(data.token, data.user, data.tenant);
         
+        // Verify data was stored (debugging)
+        console.log('🔑 Auth data stored:', {
+          token: localStorage.getItem('kenyahoa_token') ? 'Present' : 'Missing',
+          user: localStorage.getItem('kenyahoa_user') ? 'Present' : 'Missing',
+          tenant: localStorage.getItem('kenyahoa_tenant') ? 'Present' : 'Missing'
+        });
+        
         const tenantName = data.tenant ? data.tenant.name : 'Platform Admin';
         this.showToast(`Welcome ${data.user.first_name}! Redirecting to ${tenantName} dashboard...`, 'success');
         
-        // Redirect to dashboard
+        // Redirect to dashboard with verification
         setTimeout(() => {
+          // Double-check auth data exists before redirect
+          const authCheck = AuthUtils.checkAuthentication();
+          console.log('🔍 Pre-redirect auth check:', authCheck ? 'Valid' : 'Invalid');
           window.location.href = '/dashboard';
         }, 2000);
       } else {
@@ -324,11 +334,21 @@ class KenyaHOAApp {
         // Store token and user data
         AuthUtils.storeAuthData(data.token, data.user, data.tenant);
         
+        // Verify data was stored (debugging)
+        console.log('🔑 Auth data stored:', {
+          token: localStorage.getItem('kenyahoa_token') ? 'Present' : 'Missing',
+          user: localStorage.getItem('kenyahoa_user') ? 'Present' : 'Missing',
+          tenant: localStorage.getItem('kenyahoa_tenant') ? 'Present' : 'Missing'
+        });
+        
         const tenantName = data.tenant ? data.tenant.name : 'Platform Admin';
         this.showToast(`Welcome ${data.user.first_name}! Redirecting to ${tenantName} dashboard...`, 'success');
         
-        // Redirect to dashboard
+        // Redirect to dashboard with verification
         setTimeout(() => {
+          // Double-check auth data exists before redirect
+          const authCheck = AuthUtils.checkAuthentication();
+          console.log('🔍 Pre-redirect auth check:', authCheck ? 'Valid' : 'Invalid');
           window.location.href = '/dashboard';
         }, 2000);
       } else {
@@ -377,10 +397,20 @@ class KenyaHOAApp {
         // Store token and user data
         AuthUtils.storeAuthData(data.token, data.user, data.tenant);
         
+        // Verify data was stored (debugging)
+        console.log('🔑 Auth data stored:', {
+          token: localStorage.getItem('kenyahoa_token') ? 'Present' : 'Missing',
+          user: localStorage.getItem('kenyahoa_user') ? 'Present' : 'Missing',
+          tenant: localStorage.getItem('kenyahoa_tenant') ? 'Present' : 'Missing'
+        });
+        
         this.showToast('Account created successfully! Welcome to KenyaHOA Pro!', 'success');
         
-        // Redirect to dashboard
+        // Redirect to dashboard with verification
         setTimeout(() => {
+          // Double-check auth data exists before redirect
+          const authCheck = AuthUtils.checkAuthentication();
+          console.log('🔍 Pre-redirect auth check:', authCheck ? 'Valid' : 'Invalid');
           window.location.href = '/dashboard';
         }, 2000);
       } else {
