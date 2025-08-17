@@ -52,7 +52,13 @@ auth.post('/login', async (c) => {
       
       if (users.length === 1) {
         user = users[0];
-        tenant = await db.findById<PlatformTenant>('platform_tenants', user.tenant_id);
+        // Handle super admin and platform users (no tenant)
+        if (user.tenant_id) {
+          tenant = await db.findById<PlatformTenant>('platform_tenants', user.tenant_id);
+        } else {
+          // Platform user (super admin, support agent, etc.) - no tenant required
+          tenant = null;
+        }
       } else if (users.length > 1) {
         return c.json({ 
           error: 'Multiple accounts found', 
@@ -61,7 +67,7 @@ auth.post('/login', async (c) => {
       }
     }
 
-    if (!user || !tenant) {
+    if (!user) {
       return c.json({ error: 'Login failed', message: 'Invalid credentials' }, 401);
     }
 
@@ -70,8 +76,8 @@ auth.post('/login', async (c) => {
       return c.json({ error: 'Account suspended', message: 'Your account has been suspended' }, 403);
     }
 
-    // Check if tenant is active
-    if (tenant.status !== 'active') {
+    // Check if tenant is active (only for tenant-based users)
+    if (tenant && tenant.status !== 'active') {
       return c.json({ error: 'HOA suspended', message: 'This HOA account has been suspended' }, 403);
     }
 
@@ -102,12 +108,12 @@ auth.post('/login', async (c) => {
       success: true,
       token,
       user: safeUser,
-      tenant: {
+      tenant: tenant ? {
         id: tenant.id,
         name: tenant.name,
         slug: tenant.slug,
         subscription_plan: tenant.subscription_plan
-      },
+      } : null, // Super admin has no tenant
       expires_at: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString() // 24 hours
     });
 
