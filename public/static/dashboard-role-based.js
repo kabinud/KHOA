@@ -344,54 +344,59 @@ class RoleBasedDashboard {
   }
 
   async init() {
-    console.log('Initializing role-based dashboard...');
-    
-    // Check authentication first
-    if (!this.checkAuth()) {
-      console.log('Authentication failed, redirecting to login');
-      window.location.href = '/index.html';
-      return;
-    }
+    try {
+      console.log('Initializing role-based dashboard...');
+      
+      // Show loading indicator
+      this.showLoadingSpinner();
+      
+      // Check authentication first
+      if (!this.checkAuth()) {
+        console.log('Authentication failed, redirecting to login');
+        AuthUtils.redirectToLogin();
+        return;
+      }
 
-    // Check if user is on correct dashboard for their role
-    if (!this.validateRoleDashboard()) {
-      return; // Will redirect to correct dashboard
-    }
+      // Check if user is on correct dashboard for their role
+      if (!this.validateRoleDashboard()) {
+        return; // Will redirect to correct dashboard
+      }
 
-    // Add modal container to body
-    this.addModalContainer();
-    
-    // Update UI with user data
-    this.updateUserInterface();
-    
-    // Load dashboard data based on role
-    await this.loadRoleSpecificData();
-    
-    // Setup event listeners
-    this.setupEventListeners();
-    
-    console.log(`Role-based dashboard initialized for ${this.user.role}`);
+      // Add modal container to body
+      this.addModalContainer();
+      
+      // Update UI with user data
+      this.updateUserInterface();
+      
+      // Load dashboard data based on role
+      await this.loadRoleSpecificData();
+      
+      // Setup event listeners
+      this.setupEventListeners();
+      
+      // Hide loading indicator
+      this.hideLoadingSpinner();
+      
+      console.log(`Role-based dashboard initialized for ${this.user.role}`);
+    } catch (error) {
+      console.error('Failed to initialize dashboard:', error);
+      this.hideLoadingSpinner();
+      this.showErrorMessage('Failed to initialize dashboard. Please refresh the page.');
+    }
   }
 
   checkAuth() {
-    this.token = localStorage.getItem('kenyahoa_token');
-    const userStr = localStorage.getItem('kenyahoa_user');
-    const tenantStr = localStorage.getItem('kenyahoa_tenant');
-
-    if (!this.token || !userStr || !tenantStr) {
-      console.log('Missing authentication data');
+    const authData = AuthUtils.checkAuthentication();
+    
+    if (!authData) {
       return false;
     }
-
-    try {
-      this.user = JSON.parse(userStr);
-      this.tenant = JSON.parse(tenantStr);
-      console.log('Auth check passed:', { user: this.user.first_name, tenant: this.tenant.name, role: this.user.role });
-      return true;
-    } catch (error) {
-      console.error('Error parsing stored data:', error);
-      return false;
-    }
+    
+    this.token = authData.token;
+    this.user = authData.user;
+    this.tenant = authData.tenant;
+    
+    return true;
   }
 
   validateRoleDashboard() {
@@ -437,13 +442,13 @@ class RoleBasedDashboard {
     // Update main HOA name in header
     const hoaMainNameEl = document.getElementById('hoa-main-name');
     if (hoaMainNameEl) {
-      hoaMainNameEl.textContent = this.tenant.name;
+      hoaMainNameEl.textContent = this.tenant ? this.tenant.name : 'KenyaHOA Pro Platform';
     }
 
     // Update HOA location
     const hoaLocationEl = document.getElementById('hoa-location');
     if (hoaLocationEl) {
-      hoaLocationEl.textContent = this.tenant.location || '';
+      hoaLocationEl.textContent = this.tenant ? (this.tenant.location || '') : 'Platform Administration';
     }
 
     // Update welcome user name
@@ -1309,10 +1314,7 @@ class RoleBasedDashboard {
 
     // Logout functionality
     window.logout = () => {
-      localStorage.removeItem('kenyahoa_token');
-      localStorage.removeItem('kenyahoa_user');
-      localStorage.removeItem('kenyahoa_tenant');
-      window.location.href = '/index.html';
+      AuthUtils.logout();
     };
 
     // Modal functionality
@@ -3517,9 +3519,75 @@ class RoleBasedDashboard {
     alert('User export functionality would be implemented here');
   }
 
-  showErrorMessage() {
-    console.error('Error loading dashboard data');
-    // Could show a toast or error message here
+  showErrorMessage(message = 'Failed to load dashboard data. Please try again later.') {
+    console.error('Dashboard error:', message);
+    
+    // Show toast notification
+    this.showToast(message, 'error');
+  }
+
+  showLoadingSpinner() {
+    const existingSpinner = document.getElementById('dashboard-loading-spinner');
+    if (existingSpinner) return;
+
+    const spinner = document.createElement('div');
+    spinner.id = 'dashboard-loading-spinner';
+    spinner.className = 'fixed inset-0 bg-white bg-opacity-90 flex items-center justify-center z-50';
+    spinner.innerHTML = `
+      <div class="text-center">
+        <div class="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+        <p class="mt-4 text-gray-600">Loading dashboard...</p>
+      </div>
+    `;
+    document.body.appendChild(spinner);
+  }
+
+  hideLoadingSpinner() {
+    const spinner = document.getElementById('dashboard-loading-spinner');
+    if (spinner) {
+      spinner.remove();
+    }
+  }
+
+  showToast(message, type = 'info') {
+    const toastContainer = document.getElementById('toast-container') || this.createToastContainer();
+    
+    const toast = document.createElement('div');
+    toast.className = `toast-item transform transition-all duration-300 mb-4 p-4 rounded-lg shadow-lg max-w-sm w-full`;
+    
+    const colors = {
+      'success': 'bg-green-100 border border-green-400 text-green-700',
+      'error': 'bg-red-100 border border-red-400 text-red-700',
+      'warning': 'bg-yellow-100 border border-yellow-400 text-yellow-700',
+      'info': 'bg-blue-100 border border-blue-400 text-blue-700'
+    };
+    
+    toast.className += ` ${colors[type] || colors.info}`;
+    toast.innerHTML = `
+      <div class="flex items-center justify-between">
+        <p class="text-sm font-medium">${message}</p>
+        <button onclick="this.parentElement.parentElement.remove()" class="ml-4 text-gray-500 hover:text-gray-700">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+    `;
+    
+    toastContainer.appendChild(toast);
+    
+    // Auto-remove after 5 seconds
+    setTimeout(() => {
+      if (toast.parentNode) {
+        toast.remove();
+      }
+    }, 5000);
+  }
+
+  createToastContainer() {
+    const container = document.createElement('div');
+    container.id = 'toast-container';
+    container.className = 'fixed top-4 right-4 z-50';
+    document.body.appendChild(container);
+    return container;
   }
 }
 

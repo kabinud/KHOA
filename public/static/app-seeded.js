@@ -1,7 +1,7 @@
 // KenyaHOA Pro - Main Landing Page JavaScript with Seeded Data
 class KenyaHOAApp {
   constructor() {
-    this.currentLanguage = localStorage.getItem('kenyahoa_language') || 'en';
+    this.currentLanguage = AuthUtils.getLanguage();
     this.apiBaseUrl = '/api';
     this.availableAccounts = [];
     this.init();
@@ -87,7 +87,7 @@ class KenyaHOAApp {
 
   switchLanguage(lang) {
     this.currentLanguage = lang;
-    localStorage.setItem('kenyahoa_language', lang);
+    AuthUtils.setLanguage(lang);
     
     // Update UI
     const langEn = document.getElementById('lang-en');
@@ -270,13 +270,7 @@ class KenyaHOAApp {
 
       if (data.success) {
         // Store token and user data
-        localStorage.setItem('kenyahoa_token', data.token);
-        localStorage.setItem('kenyahoa_user', JSON.stringify(data.user));
-        if (data.tenant) {
-          localStorage.setItem('kenyahoa_tenant', JSON.stringify(data.tenant));
-        } else {
-          localStorage.removeItem('kenyahoa_tenant'); // Clear tenant for platform admin
-        }
+        AuthUtils.storeAuthData(data.token, data.user, data.tenant);
         
         const tenantName = data.tenant ? data.tenant.name : 'Platform Admin';
         this.showToast(`Welcome ${data.user.first_name}! Redirecting to ${tenantName} dashboard...`, 'success');
@@ -328,13 +322,7 @@ class KenyaHOAApp {
 
       if (data.success) {
         // Store token and user data
-        localStorage.setItem('kenyahoa_token', data.token);
-        localStorage.setItem('kenyahoa_user', JSON.stringify(data.user));
-        if (data.tenant) {
-          localStorage.setItem('kenyahoa_tenant', JSON.stringify(data.tenant));
-        } else {
-          localStorage.removeItem('kenyahoa_tenant'); // Clear tenant for platform admin
-        }
+        AuthUtils.storeAuthData(data.token, data.user, data.tenant);
         
         const tenantName = data.tenant ? data.tenant.name : 'Platform Admin';
         this.showToast(`Welcome ${data.user.first_name}! Redirecting to ${tenantName} dashboard...`, 'success');
@@ -387,13 +375,7 @@ class KenyaHOAApp {
 
       if (data.success) {
         // Store token and user data
-        localStorage.setItem('kenyahoa_token', data.token);
-        localStorage.setItem('kenyahoa_user', JSON.stringify(data.user));
-        if (data.tenant) {
-          localStorage.setItem('kenyahoa_tenant', JSON.stringify(data.tenant));
-        } else {
-          localStorage.removeItem('kenyahoa_tenant'); // Clear tenant for platform admin
-        }
+        AuthUtils.storeAuthData(data.token, data.user, data.tenant);
         
         this.showToast('Account created successfully! Welcome to KenyaHOA Pro!', 'success');
         

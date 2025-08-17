@@ -406,6 +406,9 @@ app.get('/', (c) => {
         <!-- Axios for API calls -->
         <script src="https://cdn.jsdelivr.net/npm/axios@1.6.0/dist/axios.min.js"></script>
         
+        <!-- Authentication utilities -->
+        <script src="/static/auth-utils.js"></script>
+        
         <!-- Custom JavaScript -->
         <script src="/static/app-seeded.js"></script>
     </body>
@@ -429,6 +432,7 @@ app.get('/dashboard', (c) => {
     <body class="bg-gray-100">
         <div id="dashboard-app"></div>
         <script src="https://cdn.jsdelivr.net/npm/axios@1.6.0/dist/axios.min.js"></script>
+        <script src="/static/auth-utils.js"></script>
         <script src="/static/dashboard.js"></script>
     </body>
     </html>
