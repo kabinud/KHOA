@@ -152,7 +152,7 @@ class KenyaHOAApp {
           <div class="space-y-3">
             ${this.availableAccounts.map((account, index) => `
               <div class="border rounded-lg p-4 hover:bg-gray-50 cursor-pointer transition-colors" 
-                   onclick="window.kenyaHOA.loginWithAccount('${account.email}')">
+                   onclick="window.kenyaHOAApp.loginWithAccount('${account.email}')">
                 <div class="flex items-center justify-between">
                   <div class="flex-1">
                     <div class="flex items-center space-x-3">
@@ -272,9 +272,14 @@ class KenyaHOAApp {
         // Store token and user data
         localStorage.setItem('kenyahoa_token', data.token);
         localStorage.setItem('kenyahoa_user', JSON.stringify(data.user));
-        localStorage.setItem('kenyahoa_tenant', JSON.stringify(data.tenant));
+        if (data.tenant) {
+          localStorage.setItem('kenyahoa_tenant', JSON.stringify(data.tenant));
+        } else {
+          localStorage.removeItem('kenyahoa_tenant'); // Clear tenant for platform admin
+        }
         
-        this.showToast(`Welcome ${data.user.first_name}! Redirecting to ${data.tenant.name} dashboard...`, 'success');
+        const tenantName = data.tenant ? data.tenant.name : 'Platform Admin';
+        this.showToast(`Welcome ${data.user.first_name}! Redirecting to ${tenantName} dashboard...`, 'success');
         
         // Redirect to dashboard
         setTimeout(() => {
@@ -325,9 +330,14 @@ class KenyaHOAApp {
         // Store token and user data
         localStorage.setItem('kenyahoa_token', data.token);
         localStorage.setItem('kenyahoa_user', JSON.stringify(data.user));
-        localStorage.setItem('kenyahoa_tenant', JSON.stringify(data.tenant));
+        if (data.tenant) {
+          localStorage.setItem('kenyahoa_tenant', JSON.stringify(data.tenant));
+        } else {
+          localStorage.removeItem('kenyahoa_tenant'); // Clear tenant for platform admin
+        }
         
-        this.showToast(`Welcome ${data.user.first_name}! Redirecting to ${data.tenant.name} dashboard...`, 'success');
+        const tenantName = data.tenant ? data.tenant.name : 'Platform Admin';
+        this.showToast(`Welcome ${data.user.first_name}! Redirecting to ${tenantName} dashboard...`, 'success');
         
         // Redirect to dashboard
         setTimeout(() => {
@@ -379,7 +389,11 @@ class KenyaHOAApp {
         // Store token and user data
         localStorage.setItem('kenyahoa_token', data.token);
         localStorage.setItem('kenyahoa_user', JSON.stringify(data.user));
-        localStorage.setItem('kenyahoa_tenant', JSON.stringify(data.tenant));
+        if (data.tenant) {
+          localStorage.setItem('kenyahoa_tenant', JSON.stringify(data.tenant));
+        } else {
+          localStorage.removeItem('kenyahoa_tenant'); // Clear tenant for platform admin
+        }
         
         this.showToast('Account created successfully! Welcome to KenyaHOA Pro!', 'success');
         

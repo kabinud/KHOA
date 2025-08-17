@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Super Admin Login Debug</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 p-8">
+    <div class="max-w-4xl mx-auto bg-white rounded-lg shadow-md p-6">
+        <h1 class="text-2xl font-bold mb-6 text-center">🔍 Super Admin Login Debug</h1>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Test Controls -->
+            <div class="space-y-4">
+                <h2 class="text-lg font-semibold">Test Controls</h2>
+                
+                <button id="testAPI" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded">
+                    🔌 Test API Login
+                </button>
+                
+                <button id="testFrontend" class="w-full bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded">
+                    🎯 Test Frontend Login
+                </button>
+                
+                <button id="testDemoSelector" class="w-full bg-purple-600 hover:bg-purple-700 text-white py-2 px-4 rounded">
+                    📋 Open Demo Selector
+                </button>
+                
+                <button id="clearStorage" class="w-full bg-red-600 hover:bg-red-700 text-white py-2 px-4 rounded">
+                    🗑️ Clear Local Storage
+                </button>
+            </div>
+            
+            <!-- Results -->
+            <div>
+                <h2 class="text-lg font-semibold mb-3">Test Results</h2>
+                <div id="results" class="bg-gray-50 p-4 rounded text-sm font-mono min-h-32 max-h-96 overflow-y-auto">
+                    <p class="text-gray-500">Click a test button to see results...</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Current Status -->
+        <div class="mt-6 p-4 bg-blue-50 rounded">
+            <h3 class="font-semibold text-blue-800 mb-2">Current Status</h3>
+            <div id="status" class="text-sm">
+                <p><strong>Token:</strong> <span id="currentToken">None</span></p>
+                <p><strong>User:</strong> <span id="currentUser">None</span></p>
+                <p><strong>Tenant:</strong> <span id="currentTenant">None</span></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Include the main app script -->
+    <script src="https://cdn.jsdelivr.net/npm/axios@1.6.0/dist/axios.min.js"></script>
+    <script src="/static/app-seeded.js"></script>
+    
+    <script>
+        let app;
+        
+        // Initialize after DOM loads
+        document.addEventListener('DOMContentLoaded', function() {
+            // Give time for the main app to initialize
+            setTimeout(() => {
+                app = window.kenyaHOAApp;
+                updateStatus();
+                log('🚀 Debug page loaded. App instance:', app ? 'Available' : 'Not found');
+            }, 1000);
+        });
+        
+        function log(message, type = 'info') {
+            const results = document.getElementById('results');
+            const timestamp = new Date().toLocaleTimeString();
+            const colors = {
+                info: 'text-gray-700',
+                success: 'text-green-700',
+                error: 'text-red-700',
+                warning: 'text-yellow-700'
+            };
+            results.innerHTML += `<div class="${colors[type]}">[${timestamp}] ${message}</div>`;
+            results.scrollTop = results.scrollHeight;
+        }
+        
+        function updateStatus() {
+            document.getElementById('currentToken').textContent = 
+                localStorage.getItem('kenyahoa_token') || 'None';
+            document.getElementById('currentUser').textContent = 
+                localStorage.getItem('kenyahoa_user') || 'None';
+            document.getElementById('currentTenant').textContent = 
+                localStorage.getItem('kenyahoa_tenant') || 'None';
+        }
+        
+        // Test API Login
+        document.getElementById('testAPI').addEventListener('click', async () => {
+            log('🔌 Testing API login...', 'info');
+            
+            try {
+                const response = await fetch('/api/auth/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        email: 'superadmin@kenyahoa.com',
+                        password: 'demo123'
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    log('✅ API login successful!', 'success');
+                    log(`User: ${data.user.first_name} ${data.user.last_name}`, 'info');
+                    log(`Role: ${data.user.role}`, 'info');
+                    log(`Token: ${data.token.substring(0, 20)}...`, 'info');
+                } else {
+                    log(`❌ API login failed: ${data.message}`, 'error');
+                }
+            } catch (error) {
+                log(`❌ API error: ${error.message}`, 'error');
+            }
+        });
+        
+        // Test Frontend Login
+        document.getElementById('testFrontend').addEventListener('click', async () => {
+            log('🎯 Testing frontend login...', 'info');
+            
+            if (!app) {
+                log('❌ App instance not available', 'error');
+                return;
+            }
+            
+            if (!app.loginWithAccount) {
+                log('❌ loginWithAccount method not found', 'error');
+                return;
+            }
+            
+            try {
+                log('🚀 Calling loginWithAccount...', 'info');
+                await app.loginWithAccount('superadmin@kenyahoa.com');
+                
+                setTimeout(() => {
+                    updateStatus();
+                    log('📝 Login attempt completed. Check status above.', 'info');
+                }, 2000);
+                
+            } catch (error) {
+                log(`❌ Frontend login error: ${error.message}`, 'error');
+            }
+        });
+        
+        // Test Demo Selector
+        document.getElementById('testDemoSelector').addEventListener('click', () => {
+            log('📋 Opening demo selector...', 'info');
+            
+            if (!app) {
+                log('❌ App instance not available', 'error');
+                return;
+            }
+            
+            if (!app.showDemoAccountSelector) {
+                log('❌ showDemoAccountSelector method not found', 'error');
+                return;
+            }
+            
+            app.showDemoAccountSelector();
+            log('✅ Demo selector opened', 'success');
+        });
+        
+        // Clear Storage
+        document.getElementById('clearStorage').addEventListener('click', () => {
+            localStorage.removeItem('kenyahoa_token');
+            localStorage.removeItem('kenyahoa_user');
+            localStorage.removeItem('kenyahoa_tenant');
+            updateStatus();
+            log('🗑️ Local storage cleared', 'warning');
+        });
+    </script>
+</body>
+</html>
