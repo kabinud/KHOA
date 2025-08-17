@@ -2,7 +2,8 @@
 import { Context, Next } from 'hono';
 import { AuthService, AuthError, extractToken, extractTenantSlug, RBACService } from '../utils/auth';
 import { Database } from '../utils/database';
-import type { CloudflareBindings, User, PlatformTenant, JWTPayload, UserRole } from '../types';
+import type { CloudflareBindings, User, PlatformTenant, JWTPayload } from '../types';
+import { UserRole } from '../types';
 
 export interface AuthContext {
   user: User;

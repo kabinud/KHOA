@@ -1,7 +1,8 @@
 // Authentication and authorization utilities for KenyaHOA Pro
 import * as bcrypt from 'bcryptjs';
 import { sign, verify } from 'hono/jwt';
-import type { User, UserRole, PlatformTenant } from '../types';
+import type { User, PlatformTenant } from '../types';
+import { UserRole } from '../types';
 
 export class AuthError extends Error {
   constructor(message: string, public statusCode: number = 401) {
