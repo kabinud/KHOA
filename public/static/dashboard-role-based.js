@@ -3591,6 +3591,12 @@ class RoleBasedDashboard {
   }
 }
 
+// Initialize dashboard when DOM is ready
+document.addEventListener('DOMContentLoaded', function() {
+  console.log('🚀 Initializing Role-Based Dashboard...');
+  window.dashboard = new RoleBasedDashboard();
+});
+
 // Global functions for backward compatibility
 window.switchLanguage = function(lang) {
   if (window.dashboard) {

@@ -120,7 +120,7 @@ class AuthUtils {
    * Redirect to login page
    */
   static redirectToLogin() {
-    window.location.href = '/index.html';
+    window.location.href = '/';
   }
 
   /**

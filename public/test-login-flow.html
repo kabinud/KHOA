@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Login Flow</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios@1.6.0/dist/axios.min.js"></script>
+    <script src="/static/auth-utils.js"></script>
+</head>
+<body>
+    <h1>Login Flow Test</h1>
+    <button onclick="testLogin()">Test Garden Admin Login</button>
+    <button onclick="testSuperAdmin()">Test Super Admin Login</button>
+    <button onclick="checkAuth()">Check Auth Status</button>
+    <div id="results"></div>
+
+    <script>
+    async function testLogin() {
+        const results = document.getElementById('results');
+        results.innerHTML = '<p>Testing login...</p>';
+        
+        try {
+            const response = await axios.post('/api/auth/login', {
+                email: 'admin.garden@kenyahoa.com',
+                password: 'demo123'
+            });
+            
+            console.log('Login response:', response.data);
+            
+            if (response.data.success) {
+                // Store auth data
+                AuthUtils.storeAuthData(response.data.token, response.data.user, response.data.tenant);
+                results.innerHTML = '<p style="color: green;">✅ Login successful!</p><pre>' + JSON.stringify(response.data, null, 2) + '</pre>';
+                
+                // Test auth check
+                setTimeout(() => {
+                    const authData = AuthUtils.checkAuthentication();
+                    results.innerHTML += '<p>Auth check result:</p><pre>' + JSON.stringify(authData, null, 2) + '</pre>';
+                }, 1000);
+            } else {
+                results.innerHTML = '<p style="color: red;">❌ Login failed: ' + response.data.message + '</p>';
+            }
+        } catch (error) {
+            console.error('Login error:', error);
+            results.innerHTML = '<p style="color: red;">❌ Error: ' + error.message + '</p>';
+        }
+    }
+    
+    async function testSuperAdmin() {
+        const results = document.getElementById('results');
+        results.innerHTML = '<p>Testing super admin login...</p>';
+        
+        try {
+            const response = await axios.post('/api/auth/login', {
+                email: 'superadmin@kenyahoa.com',
+                password: 'demo123'
+            });
+            
+            console.log('Super admin response:', response.data);
+            
+            if (response.data.success) {
+                AuthUtils.storeAuthData(response.data.token, response.data.user, response.data.tenant);
+                results.innerHTML = '<p style="color: green;">✅ Super admin login successful!</p><pre>' + JSON.stringify(response.data, null, 2) + '</pre>';
+            } else {
+                results.innerHTML = '<p style="color: red;">❌ Super admin login failed: ' + response.data.message + '</p>';
+            }
+        } catch (error) {
+            console.error('Super admin error:', error);
+            results.innerHTML = '<p style="color: red;">❌ Error: ' + error.message + '</p>';
+        }
+    }
+    
+    function checkAuth() {
+        const results = document.getElementById('results');
+        const authData = AuthUtils.checkAuthentication();
+        results.innerHTML = '<p>Current auth status:</p><pre>' + JSON.stringify(authData, null, 2) + '</pre>';
+    }
+    </script>
+</body>
+</html>
