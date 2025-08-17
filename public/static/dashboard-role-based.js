@@ -401,23 +401,19 @@ class RoleBasedDashboard {
 
   validateRoleDashboard() {
     const userRole = this.user.role;
-    const expectedDashboard = this.roleConfig[userRole]?.dashboard;
-    const currentPage = window.location.pathname.split('/').pop();
+    const roleConfig = this.roleConfig[userRole];
+    const currentPath = window.location.pathname;
 
-    console.log('Validating role dashboard:', { userRole, expectedDashboard, currentPage });
+    console.log('Validating role dashboard:', { userRole, currentPath, roleConfig: roleConfig?.label });
 
-    if (!expectedDashboard) {
+    if (!roleConfig) {
       console.error('Unknown user role:', userRole);
       return false;
     }
 
-    // If user is on wrong dashboard for their role, redirect
-    if (currentPage !== expectedDashboard) {
-      console.log(`Redirecting ${userRole} from ${currentPage} to ${expectedDashboard}`);
-      window.location.href = `/${expectedDashboard}`;
-      return false;
-    }
-
+    // For single dashboard approach, all users use /dashboard
+    // No redirect needed - role-based content will be shown based on user.role
+    console.log(`✅ ${roleConfig.label} authorized for dashboard access`);
     return true;
   }
 

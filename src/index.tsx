@@ -461,6 +461,79 @@ app.get('/login', (c) => {
   `);
 });
 
+// Test route for debugging authentication
+app.get('/test-auth', (c) => {
+  return c.html(`
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>Test Auth Simulation</title>
+        <script src="https://cdn.tailwindcss.com"></script>
+    </head>
+    <body class="bg-gray-100 p-8">
+        <div class="max-w-2xl mx-auto">
+            <h1 class="text-2xl font-bold mb-6">Authentication Flow Test</h1>
+            
+            <div class="space-y-4">
+                <button onclick="simulateLogin()" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+                    Simulate Garden Admin Login
+                </button>
+                <button onclick="checkCurrentAuth()" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">
+                    Check Current Auth
+                </button>
+                <button onclick="clearAuth()" class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700">
+                    Clear Auth Data
+                </button>
+                <button onclick="goToDashboard()" class="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700">
+                    Go to Dashboard
+                </button>
+            </div>
+            
+            <div id="status" class="mt-6 p-4 bg-white rounded shadow"></div>
+        </div>
+
+        <script src="/static/auth-utils.js"></script>
+        <script>
+        function simulateLogin() {
+            const mockUser = {
+                id: 'user-garden-admin',
+                email: 'admin.garden@kenyahoa.com',
+                first_name: 'Sarah',
+                last_name: 'Kimani',
+                role: 'hoa_admin'
+            };
+            
+            const mockTenant = {
+                id: 'tenant-garden',
+                name: 'Garden Estate Homeowners Association',
+                slug: 'garden-estate'
+            };
+            
+            const mockToken = 'mock-jwt-token-for-testing';
+            AuthUtils.storeAuthData(mockToken, mockUser, mockTenant);
+            
+            document.getElementById('status').innerHTML = '<p class="text-green-600">✅ Mock auth data stored!</p>';
+        }
+        
+        function checkCurrentAuth() {
+            const authData = AuthUtils.checkAuthentication();
+            document.getElementById('status').innerHTML = '<pre class="text-sm">' + JSON.stringify(authData, null, 2) + '</pre>';
+        }
+        
+        function clearAuth() {
+            AuthUtils.clearAuthData();
+            document.getElementById('status').innerHTML = '<p class="text-red-600">🗑️ Auth data cleared!</p>';
+        }
+        
+        function goToDashboard() {
+            window.location.href = '/dashboard';
+        }
+        </script>
+    </body>
+    </html>
+  `);
+});
+
 // 404 handler
 app.notFound((c) => {
   return c.html(`

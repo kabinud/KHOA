@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Auth Simulation</title>
+</head>
+<body>
+    <h1>Authentication Flow Test</h1>
+    <button onclick="simulateLogin()">Simulate Garden Admin Login</button>
+    <button onclick="checkCurrentAuth()">Check Current Auth</button>
+    <button onclick="clearAuth()">Clear Auth Data</button>
+    <button onclick="goToDashboard()">Go to Dashboard</button>
+    <div id="status"></div>
+
+    <script src="/static/auth-utils.js"></script>
+    <script>
+    function simulateLogin() {
+        // Simulate successful login data
+        const mockUser = {
+            id: 'user-garden-admin',
+            email: 'admin.garden@kenyahoa.com',
+            first_name: 'Sarah',
+            last_name: 'Kimani',
+            role: 'hoa_admin'
+        };
+        
+        const mockTenant = {
+            id: 'tenant-garden',
+            name: 'Garden Estate Homeowners Association',
+            slug: 'garden-estate'
+        };
+        
+        const mockToken = 'mock-jwt-token-for-testing';
+        
+        // Store the data
+        AuthUtils.storeAuthData(mockToken, mockUser, mockTenant);
+        
+        document.getElementById('status').innerHTML = 'Mock auth data stored!';
+    }
+    
+    function checkCurrentAuth() {
+        const authData = AuthUtils.checkAuthentication();
+        document.getElementById('status').innerHTML = '<pre>' + JSON.stringify(authData, null, 2) + '</pre>';
+    }
+    
+    function clearAuth() {
+        AuthUtils.clearAuthData();
+        document.getElementById('status').innerHTML = 'Auth data cleared!';
+    }
+    
+    function goToDashboard() {
+        window.location.href = '/dashboard';
+    }
+    </script>
+</body>
+</html>
