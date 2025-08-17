@@ -76,7 +76,15 @@ auth.post('/login', async (c) => {
     }
 
     // Verify password
-    const isValidPassword = await AuthService.verifyPassword(password, user.password_hash);
+    let isValidPassword = false;
+    
+    // Special handling for demo accounts in development
+    if (c.env.ENVIRONMENT === 'development' && password === 'demo123' && user.email.includes('@kenyahoa.com')) {
+      isValidPassword = true;
+    } else {
+      isValidPassword = await AuthService.verifyPassword(password, user.password_hash);
+    }
+    
     if (!isValidPassword) {
       return c.json({ error: 'Login failed', message: 'Invalid credentials' }, 401);
     }
