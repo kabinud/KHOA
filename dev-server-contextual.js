@@ -1137,6 +1137,8 @@ const server = http.createServer((req, res) => {
   if (req.url === '/') {
     filePath = path.join(__dirname, 'dist', 'index.html');
   } else if (req.url === '/dashboard' || req.url === '/dashboard/') {
+    // Route to appropriate dashboard based on user role (if we can determine it)
+    // For now, serve the main dashboard which will handle routing internally
     filePath = path.join(__dirname, 'dist', 'dashboard.html');
   } else if (req.url.startsWith('/static/')) {
     // Serve static files from public directory
