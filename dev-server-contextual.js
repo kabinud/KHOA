@@ -942,8 +942,8 @@ const seededData = {
     // Super Admin Users (Platform Level)
     'superadmin@kenyahoa.com': {
       id: 'user-super-001',
-      first_name: 'Sarah',
-      last_name: 'Kimani',
+      first_name: 'Platform',
+      last_name: 'SuperAdmin',
       email: 'superadmin@kenyahoa.com',
       role: 'super_admin',
       tenant_slug: null, // Super admins are not tied to specific tenants

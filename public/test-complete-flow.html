@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complete Super Admin Flow Test</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 p-8">
+    <div class="max-w-4xl mx-auto bg-white rounded-lg shadow-md p-6">
+        <h1 class="text-2xl font-bold mb-6 text-center">Complete Super Admin Flow Test</h1>
+        
+        <div class="space-y-4 mb-6">
+            <button id="clearData" class="w-full bg-red-600 hover:bg-red-700 text-white py-2 px-4 rounded">
+                🗑️ Clear All Data & Start Fresh
+            </button>
+            
+            <button id="testLogin" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded">
+                🔐 Test Super Admin Login
+            </button>
+            
+            <button id="checkStorage" class="w-full bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded">
+                📦 Check Local Storage
+            </button>
+            
+            <button id="testDashboard" class="w-full bg-purple-600 hover:bg-purple-700 text-white py-2 px-4 rounded">
+                📊 Test Dashboard Access
+            </button>
+            
+            <button id="goToDashboard" class="w-full bg-orange-600 hover:bg-orange-700 text-white py-2 px-4 rounded">
+                🚀 Go to Dashboard
+            </button>
+        </div>
+        
+        <div class="bg-gray-50 p-4 rounded">
+            <h3 class="font-semibold mb-2">Test Results:</h3>
+            <div id="results" class="text-sm font-mono max-h-64 overflow-y-auto">
+                Click a test button to see results...
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function log(message, type = 'info') {
+            const results = document.getElementById('results');
+            const timestamp = new Date().toLocaleTimeString();
+            const colors = {
+                info: 'text-gray-700',
+                success: 'text-green-700',
+                error: 'text-red-700',
+                warning: 'text-yellow-700'
+            };
+            results.innerHTML += `<div class="${colors[type]}">[${timestamp}] ${message}</div>`;
+            results.scrollTop = results.scrollHeight;
+        }
+
+        // Clear all data
+        document.getElementById('clearData').addEventListener('click', () => {
+            localStorage.clear();
+            log('🗑️ All localStorage data cleared', 'warning');
+        });
+
+        // Test login
+        document.getElementById('testLogin').addEventListener('click', async () => {
+            log('🔐 Testing super admin login...', 'info');
+            
+            try {
+                const response = await fetch('/api/auth/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        email: 'superadmin@kenyahoa.com',
+                        password: 'demo123'
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    // Store the data like the frontend would
+                    localStorage.setItem('kenyahoa_token', data.token);
+                    localStorage.setItem('kenyahoa_user', JSON.stringify(data.user));
+                    
+                    // Don't store tenant for super admin
+                    if (data.tenant) {
+                        localStorage.setItem('kenyahoa_tenant', JSON.stringify(data.tenant));
+                    } else {
+                        localStorage.removeItem('kenyahoa_tenant');
+                    }
+                    
+                    log(`✅ Login successful! User: ${data.user.first_name} ${data.user.last_name}`, 'success');
+                    log(`Role: ${data.user.role}`, 'info');
+                    log(`Token: ${data.token.substring(0, 20)}...`, 'info');
+                } else {
+                    log(`❌ Login failed: ${data.message}`, 'error');
+                }
+            } catch (error) {
+                log(`❌ Login error: ${error.message}`, 'error');
+            }
+        });
+
+        // Check storage
+        document.getElementById('checkStorage').addEventListener('click', () => {
+            log('📦 Checking localStorage...', 'info');
+            
+            const token = localStorage.getItem('kenyahoa_token');
+            const user = localStorage.getItem('kenyahoa_user');
+            const tenant = localStorage.getItem('kenyahoa_tenant');
+            
+            log(`Token: ${token ? 'Present' : 'Missing'}`, token ? 'success' : 'error');
+            log(`User: ${user ? 'Present' : 'Missing'}`, user ? 'success' : 'error');
+            log(`Tenant: ${tenant ? 'Present' : 'Not set (normal for super admin)'}`, 'info');
+            
+            if (user) {
+                try {
+                    const userData = JSON.parse(user);
+                    log(`User role: ${userData.role}`, 'info');
+                    log(`User email: ${userData.email}`, 'info');
+                } catch (e) {
+                    log('❌ User data is corrupted', 'error');
+                }
+            }
+        });
+
+        // Test dashboard access
+        document.getElementById('testDashboard').addEventListener('click', async () => {
+            log('📊 Testing dashboard API access...', 'info');
+            
+            const token = localStorage.getItem('kenyahoa_token');
+            if (!token) {
+                log('❌ No token found. Login first!', 'error');
+                return;
+            }
+            
+            try {
+                const response = await fetch('/api/dashboard/stats', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    log('✅ Dashboard API accessible', 'success');
+                    log(`Properties: ${data.total_properties}`, 'info');
+                    log(`Residents: ${data.total_residents}`, 'info');
+                } else {
+                    log(`❌ Dashboard API error: ${response.status}`, 'error');
+                }
+            } catch (error) {
+                log(`❌ Dashboard API error: ${error.message}`, 'error');
+            }
+        });
+
+        // Go to dashboard
+        document.getElementById('goToDashboard').addEventListener('click', () => {
+            const token = localStorage.getItem('kenyahoa_token');
+            const user = localStorage.getItem('kenyahoa_user');
+            
+            if (!token || !user) {
+                log('❌ Login data missing. Cannot access dashboard!', 'error');
+                return;
+            }
+            
+            log('🚀 Redirecting to dashboard...', 'success');
+            setTimeout(() => {
+                window.location.href = '/dashboard';
+            }, 1000);
+        });
+
+        log('🎯 Super Admin Flow Test Ready', 'info');
+        log('1. Click "Clear All Data" to start fresh', 'info');
+        log('2. Click "Test Super Admin Login"', 'info');
+        log('3. Click "Check Local Storage" to verify', 'info');
+        log('4. Click "Go to Dashboard" to test redirect', 'info');
+    </script>
+</body>
+</html>

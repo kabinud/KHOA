@@ -27,13 +27,21 @@ class DashboardApp {
     const userStr = localStorage.getItem('kenyahoa_user');
     const tenantStr = localStorage.getItem('kenyahoa_tenant');
 
-    if (!this.token || !userStr || !tenantStr) {
+    // Must have token and user, tenant is optional for super admin
+    if (!this.token || !userStr) {
       return false;
     }
 
     try {
       this.user = JSON.parse(userStr);
-      this.tenant = JSON.parse(tenantStr);
+      
+      // Parse tenant if it exists, null for super admin
+      if (tenantStr && tenantStr !== 'null' && tenantStr !== 'undefined') {
+        this.tenant = JSON.parse(tenantStr);
+      } else {
+        this.tenant = null; // Super admin has no tenant
+      }
+      
       return true;
     } catch (error) {
       console.error('Error parsing stored data:', error);
@@ -56,7 +64,7 @@ class DashboardApp {
             <div class="flex items-center">
               <h1 class="text-2xl font-bold text-kenya-green">
                 <i class="fas fa-building mr-2"></i>
-                ${this.tenant.name}
+                ${this.tenant ? this.tenant.name : 'KenyaHOA Pro - Platform Admin'}
               </h1>
             </div>
             <div class="flex items-center space-x-4">
