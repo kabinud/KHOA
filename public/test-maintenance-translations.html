@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-en="Maintenance Translations Test - KenyaHOA Pro" data-sw="Jaribio la Tafsiri za Matengenezo - KenyaHOA Pro">Maintenance Translations Test - KenyaHOA Pro</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 p-8">
+    <div class="max-w-6xl mx-auto">
+        <div class="bg-white rounded-lg shadow-lg p-6 mb-6">
+            <div class="flex justify-between items-center mb-6">
+                <h1 class="text-3xl font-bold text-gray-800" data-en="Maintenance Dashboard Translation Test" data-sw="Jaribio la Tafsiri za Dashibodi ya Matengenezo">
+                    Maintenance Dashboard Translation Test
+                </h1>
+                <div class="flex space-x-2">
+                    <button id="lang-en" class="px-3 py-1 rounded text-sm bg-gray-200 hover:bg-gray-300">EN</button>
+                    <button id="lang-sw" class="px-3 py-1 rounded text-sm hover:bg-gray-200">SW</button>
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Login Test Section -->
+                <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                    <h3 class="font-semibold text-blue-800 mb-3" data-en="Quick Login Test" data-sw="Jaribio la Kuingia Haraka">
+                        Quick Login Test
+                    </h3>
+                    <p class="text-blue-700 mb-3 text-sm" data-en="Test maintenance login with translation support" data-sw="Jaribu kuingia kwa matengenezo na msaada wa tafsiri">
+                        Test maintenance login with translation support
+                    </p>
+                    <button id="test-login-btn" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm">
+                        <i class="fas fa-sign-in-alt mr-2"></i>
+                        <span data-en="Login as Maintenance Manager" data-sw="Ingia kama Meneja wa Matengenezo">Login as Maintenance Manager</span>
+                    </button>
+                </div>
+                
+                <!-- Translation Status -->
+                <div class="bg-green-50 border border-green-200 rounded-lg p-4">
+                    <h3 class="font-semibold text-green-800 mb-3" data-en="Translation Status" data-sw="Hali ya Tafsiri">
+                        Translation Status
+                    </h3>
+                    <div id="translation-status" class="space-y-2 text-sm">
+                        <div class="text-green-700">
+                            <i class="fas fa-check-circle mr-2"></i>
+                            <span data-en="English: Default Language" data-sw="Kiingereza: Lugha ya Msingi">English: Default Language</span>
+                        </div>
+                        <div class="text-green-700">
+                            <i class="fas fa-check-circle mr-2"></i>
+                            <span data-en="Swahili: Available" data-sw="Kiswahili: Inapatikana">Swahili: Available</span>
+                        </div>
+                        <div id="current-lang" class="text-blue-700 font-medium">
+                            <i class="fas fa-language mr-2"></i>
+                            <span data-en="Current: English" data-sw="Sasa: Kiswahili">Current: English</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sample UI Elements -->
+        <div class="bg-white rounded-lg shadow-lg p-6 mb-6">
+            <h2 class="text-xl font-semibold mb-4" data-en="Sample Maintenance Dashboard Elements" data-sw="Mifano ya Vipengele vya Dashibodi ya Matengenezo">
+                Sample Maintenance Dashboard Elements
+            </h2>
+            
+            <!-- Statistics Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
+                    <div class="flex items-center">
+                        <div class="p-2 rounded-full bg-blue-100">
+                            <i class="fas fa-calendar-check text-blue-600"></i>
+                        </div>
+                        <div class="ml-3">
+                            <p class="text-sm font-medium text-gray-600" data-en="Scheduled Tasks" data-sw="Kazi Zilizopangwa">Scheduled Tasks</p>
+                            <p class="text-xl font-semibold text-gray-900">12</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
+                    <div class="flex items-center">
+                        <div class="p-2 rounded-full bg-red-100">
+                            <i class="fas fa-exclamation-triangle text-red-600"></i>
+                        </div>
+                        <div class="ml-3">
+                            <p class="text-sm font-medium text-gray-600" data-en="Urgent Requests" data-sw="Maombi ya Dharura">Urgent Requests</p>
+                            <p class="text-xl font-semibold text-gray-900">3</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
+                    <div class="flex items-center">
+                        <div class="p-2 rounded-full bg-green-100">
+                            <i class="fas fa-check-circle text-green-600"></i>
+                        </div>
+                        <div class="ml-3">
+                            <p class="text-sm font-medium text-gray-600" data-en="Completed Today" data-sw="Zilizokamilika Leo">Completed Today</p>
+                            <p class="text-xl font-semibold text-gray-900">7</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
+                    <div class="flex items-center">
+                        <div class="p-2 rounded-full bg-purple-100">
+                            <i class="fas fa-users-cog text-purple-600"></i>
+                        </div>
+                        <div class="ml-3">
+                            <p class="text-sm font-medium text-gray-600" data-en="Active Vendors" data-sw="Wauzaji Hai">Active Vendors</p>
+                            <p class="text-xl font-semibold text-gray-900">5</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Quick Actions -->
+            <div class="border border-gray-200 rounded-lg p-4">
+                <h3 class="text-lg font-semibold text-gray-900 mb-4">
+                    <i class="fas fa-bolt text-orange-600 mr-2"></i>
+                    <span data-en="Quick Actions" data-sw="Vitendo vya Haraka">Quick Actions</span>
+                </h3>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                    <button class="flex flex-col items-center justify-center p-3 border-2 border-dashed border-gray-300 rounded-lg hover:border-orange-400 hover:bg-orange-50 transition duration-200">
+                        <i class="fas fa-calendar-check text-2xl text-orange-600 mb-1"></i>
+                        <span class="text-sm font-medium text-gray-700" data-en="View Schedule" data-sw="Ona Ratiba">View Schedule</span>
+                    </button>
+                    <button class="flex flex-col items-center justify-center p-3 border-2 border-dashed border-gray-300 rounded-lg hover:border-blue-400 hover:bg-blue-50 transition duration-200">
+                        <i class="fas fa-clipboard-list text-2xl text-blue-600 mb-1"></i>
+                        <span class="text-sm font-medium text-gray-700" data-en="Work Orders" data-sw="Maagizo ya Kazi">Work Orders</span>
+                    </button>
+                    <button class="flex flex-col items-center justify-center p-3 border-2 border-dashed border-gray-300 rounded-lg hover:border-green-400 hover:bg-green-50 transition duration-200">
+                        <i class="fas fa-users-cog text-2xl text-green-600 mb-1"></i>
+                        <span class="text-sm font-medium text-gray-700" data-en="Vendors" data-sw="Wauzaji">Vendors</span>
+                    </button>
+                    <button class="flex flex-col items-center justify-center p-3 border-2 border-dashed border-gray-300 rounded-lg hover:border-purple-400 hover:bg-purple-50 transition duration-200">
+                        <i class="fas fa-boxes text-2xl text-purple-600 mb-1"></i>
+                        <span class="text-sm font-medium text-gray-700" data-en="Inventory" data-sw="Hesabu ya Vifaa">Inventory</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Test Results -->
+        <div class="bg-white rounded-lg shadow-lg p-6">
+            <h2 class="text-xl font-semibold mb-4" data-en="Translation Test Results" data-sw="Matokeo ya Jaribio la Tafsiri">
+                Translation Test Results
+            </h2>
+            <div id="test-results" class="space-y-3">
+                <div class="text-blue-600">
+                    <i class="fas fa-info-circle mr-2"></i>
+                    <span data-en="Click language buttons to test translations" data-sw="Bonyeza vitufe vya lugha kujaribu tafsiri">Click language buttons to test translations</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios@1.6.0/dist/axios.min.js"></script>
+    <script>
+        class TranslationTester {
+            constructor() {
+                this.currentLanguage = localStorage.getItem('kenyahoa_language') || 'en';
+                this.init();
+            }
+
+            init() {
+                this.setupEventListeners();
+                this.updateLanguage();
+                this.updateLanguageButtons();
+                this.updateCurrentLanguageDisplay();
+            }
+
+            setupEventListeners() {
+                const langEn = document.getElementById('lang-en');
+                const langSw = document.getElementById('lang-sw');
+                
+                if (langEn) {
+                    langEn.addEventListener('click', () => this.switchLanguage('en'));
+                }
+                if (langSw) {
+                    langSw.addEventListener('click', () => this.switchLanguage('sw'));
+                }
+
+                // Test login button
+                const loginBtn = document.getElementById('test-login-btn');
+                if (loginBtn) {
+                    loginBtn.addEventListener('click', () => this.testMaintenanceLogin());
+                }
+            }
+
+            switchLanguage(lang) {
+                this.currentLanguage = lang;
+                localStorage.setItem('kenyahoa_language', lang);
+                this.updateLanguage();
+                this.updateLanguageButtons();
+                this.updateCurrentLanguageDisplay();
+                
+                this.addTestResult(`Switched to ${lang === 'en' ? 'English' : 'Swahili'}`, 'success');
+            }
+
+            updateLanguageButtons() {
+                const langEn = document.getElementById('lang-en');
+                const langSw = document.getElementById('lang-sw');
+                
+                if (langEn && langSw) {
+                    if (this.currentLanguage === 'en') {
+                        langEn.classList.add('bg-gray-300');
+                        langEn.classList.remove('hover:bg-gray-200');
+                        langSw.classList.remove('bg-gray-300');
+                        langSw.classList.add('hover:bg-gray-200');
+                    } else {
+                        langSw.classList.add('bg-gray-300');
+                        langSw.classList.remove('hover:bg-gray-200');
+                        langEn.classList.remove('bg-gray-300');
+                        langEn.classList.add('hover:bg-gray-200');
+                    }
+                }
+            }
+
+            updateLanguage() {
+                const elements = document.querySelectorAll('[data-en]');
+                elements.forEach(element => {
+                    const englishText = element.getAttribute('data-en');
+                    const swahiliText = element.getAttribute('data-sw');
+                    
+                    if (this.currentLanguage === 'sw' && swahiliText) {
+                        element.textContent = swahiliText;
+                    } else if (englishText) {
+                        element.textContent = englishText;
+                    }
+                });
+            }
+
+            updateCurrentLanguageDisplay() {
+                const currentLangElement = document.getElementById('current-lang');
+                if (currentLangElement) {
+                    const langDisplay = this.currentLanguage === 'en' ? 'Current: English' : 'Current: Swahili';
+                    const langDisplaySw = this.currentLanguage === 'en' ? 'Sasa: Kiingereza' : 'Sasa: Kiswahili';
+                    
+                    currentLangElement.setAttribute('data-en', langDisplay);
+                    currentLangElement.setAttribute('data-sw', langDisplaySw);
+                    
+                    if (this.currentLanguage === 'sw') {
+                        currentLangElement.textContent = langDisplaySw;
+                    } else {
+                        currentLangElement.textContent = langDisplay;
+                    }
+                }
+            }
+
+            async testMaintenanceLogin() {
+                const loginBtn = document.getElementById('test-login-btn');
+                const originalText = loginBtn.innerHTML;
+                
+                try {
+                    loginBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Testing...';
+                    loginBtn.disabled = true;
+                    
+                    // Test maintenance login
+                    const response = await axios.post('/api/auth/login', {
+                        email: 'maintenance.garden@kenyahoa.com',
+                        password: 'demo123',
+                        tenant_slug: 'garden-estate'
+                    });
+                    
+                    if (response.data.success) {
+                        const userData = response.data.user;
+                        this.addTestResult(`✅ Login successful: ${userData.first_name} ${userData.last_name} (${userData.role})`, 'success');
+                        
+                        // Store credentials for dashboard access
+                        localStorage.setItem('kenyahoa_token', response.data.token);
+                        localStorage.setItem('kenyahoa_user', JSON.stringify(response.data.user));
+                        localStorage.setItem('kenyahoa_tenant', JSON.stringify(response.data.tenant));
+                        
+                        // Provide link to maintenance dashboard
+                        this.addTestResult(`🔗 Dashboard available at: <a href="/dashboard-maintenance.html" class="text-blue-600 hover:underline" target="_blank">Maintenance Dashboard</a>`, 'info');
+                    } else {
+                        throw new Error('Login failed');
+                    }
+                } catch (error) {
+                    this.addTestResult(`❌ Login failed: ${error.message}`, 'error');
+                } finally {
+                    loginBtn.innerHTML = originalText;
+                    loginBtn.disabled = false;
+                }
+            }
+
+            addTestResult(message, type) {
+                const resultsContainer = document.getElementById('test-results');
+                const resultDiv = document.createElement('div');
+                
+                const colorClass = {
+                    'success': 'text-green-600',
+                    'error': 'text-red-600',
+                    'info': 'text-blue-600'
+                }[type] || 'text-gray-600';
+                
+                resultDiv.className = `${colorClass} text-sm`;
+                resultDiv.innerHTML = `<i class="fas fa-${type === 'success' ? 'check' : type === 'error' ? 'times' : 'info'}-circle mr-2"></i>${message}`;
+                
+                resultsContainer.appendChild(resultDiv);
+                
+                // Scroll to show the new result
+                resultDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
+        }
+
+        // Initialize the translation tester
+        document.addEventListener('DOMContentLoaded', () => {
+            new TranslationTester();
+        });
+    </script>
+</body>
+</html>

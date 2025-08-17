@@ -416,4 +416,104 @@ auth.post('/tenants', async (c) => {
   }
 });
 
+// Demo accounts endpoint for testing (development/demo purposes)
+auth.get('/demo-accounts', async (c) => {
+  try {
+    const demoAccounts = [
+      {
+        name: 'Garden Estate Admin',
+        email: 'admin.garden@kenyahoa.com',
+        password: 'demo123',
+        tenant_slug: 'garden-estate',
+        hoa_name: 'Garden Estate Homeowners Association',
+        role: 'HOA Admin',
+        description: 'Full administrative access to Garden Estate'
+      },
+      {
+        name: 'Riverside Towers Admin', 
+        email: 'admin.riverside@kenyahoa.com',
+        password: 'demo123',
+        tenant_slug: 'riverside-towers',
+        hoa_name: 'Riverside Towers Residents Association',
+        role: 'HOA Admin',
+        description: 'Full administrative access to Riverside Towers'
+      },
+      {
+        name: 'Kileleshwa Villas Admin',
+        email: 'admin.kileleshwa@kenyahoa.com', 
+        password: 'demo123',
+        tenant_slug: 'kileleshwa-villas',
+        hoa_name: 'Kileleshwa Villas Community',
+        role: 'HOA Admin',
+        description: 'Full administrative access to Kileleshwa Villas'
+      },
+      {
+        name: 'Mombasa Beach Admin',
+        email: 'admin.mombasa@kenyahoa.com',
+        password: 'demo123', 
+        tenant_slug: 'mombasa-beach',
+        hoa_name: 'Mombasa Beach Resort Owners',
+        role: 'HOA Admin',
+        description: 'Full administrative access to Mombasa Beach'
+      },
+      {
+        name: 'Garden Estate Maintenance',
+        email: 'maintenance.garden@kenyahoa.com',
+        password: 'demo123',
+        tenant_slug: 'garden-estate',
+        hoa_name: 'Garden Estate Homeowners Association',
+        role: 'Maintenance Manager',
+        description: 'Maintenance management for Garden Estate'
+      },
+      {
+        name: 'Riverside Towers Maintenance',
+        email: 'maintenance.riverside@kenyahoa.com',
+        password: 'demo123',
+        tenant_slug: 'riverside-towers',
+        hoa_name: 'Riverside Towers Residents Association', 
+        role: 'Maintenance Manager',
+        description: 'Maintenance management for Riverside Towers'
+      },
+      {
+        name: 'Garden Estate Resident',
+        email: 'owner.garden@kenyahoa.com',
+        password: 'demo123',
+        tenant_slug: 'garden-estate',
+        hoa_name: 'Garden Estate Homeowners Association',
+        role: 'Property Owner',
+        description: 'Property owner in Garden Estate (Unit A-15)'
+      },
+      {
+        name: 'Riverside Towers Resident', 
+        email: 'owner.riverside@kenyahoa.com',
+        password: 'demo123',
+        tenant_slug: 'riverside-towers',
+        hoa_name: 'Riverside Towers Residents Association',
+        role: 'Property Owner',
+        description: 'Property owner in Riverside Towers (Unit 15A)'
+      },
+      {
+        name: 'Platform Super Admin',
+        email: 'superadmin@kenyahoa.com',
+        password: 'demo123',
+        tenant_slug: null,
+        hoa_name: 'Platform Administration',
+        role: 'Super Admin',
+        description: 'Full platform administration access'
+      }
+    ];
+    
+    return c.json({
+      success: true,
+      accounts: demoAccounts,
+      total_accounts: demoAccounts.length,
+      message: 'Demo accounts available for testing different roles and HOAs'
+    });
+
+  } catch (error) {
+    console.error('Demo accounts error:', error);
+    return c.json({ error: 'Request failed', message: 'Unable to fetch demo accounts' }, 500);
+  }
+});
+
 export default auth;

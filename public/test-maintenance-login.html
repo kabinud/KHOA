@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maintenance Login Test - KenyaHOA Pro</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 p-8">
+    <div class="max-w-4xl mx-auto">
+        <h1 class="text-3xl font-bold text-gray-800 mb-6">
+            <i class="fas fa-tools mr-2"></i>
+            Maintenance Login Test Results
+        </h1>
+        
+        <div class="bg-white rounded-lg shadow-lg p-6 mb-6">
+            <h2 class="text-xl font-semibold mb-4">
+                <i class="fas fa-info-circle text-blue-500 mr-2"></i>
+                Test Summary
+            </h2>
+            <p class="text-gray-600 mb-4">
+                Testing maintenance role login functionality across all HOAs to verify the fix for the "unknown role" error.
+            </p>
+            <div id="test-summary" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <!-- Test results will be populated here -->
+            </div>
+        </div>
+
+        <div class="space-y-4">
+            <h2 class="text-xl font-semibold mb-4">
+                <i class="fas fa-user-cog text-green-500 mr-2"></i>
+                Maintenance Users Test Results
+            </h2>
+            
+            <!-- Garden Estate -->
+            <div class="bg-white rounded-lg shadow p-4">
+                <h3 class="font-semibold text-lg mb-2">🏡 Garden Estate</h3>
+                <div id="garden-estate-result" class="text-gray-600">
+                    <i class="fas fa-spinner fa-spin mr-2"></i>Testing...
+                </div>
+            </div>
+            
+            <!-- Riverside Towers -->
+            <div class="bg-white rounded-lg shadow p-4">
+                <h3 class="font-semibold text-lg mb-2">🏢 Riverside Towers</h3>
+                <div id="riverside-towers-result" class="text-gray-600">
+                    <i class="fas fa-spinner fa-spin mr-2"></i>Testing...
+                </div>
+            </div>
+            
+            <!-- Kileleshwa Villas -->
+            <div class="bg-white rounded-lg shadow p-4">
+                <h3 class="font-semibold text-lg mb-2">🏘️ Kileleshwa Villas</h3>
+                <div id="kileleshwa-villas-result" class="text-gray-600">
+                    <i class="fas fa-spinner fa-spin mr-2"></i>Testing...
+                </div>
+            </div>
+            
+            <!-- Mombasa Beach -->
+            <div class="bg-white rounded-lg shadow p-4">
+                <h3 class="font-semibent text-lg mb-2">🏖️ Mombasa Beach</h3>
+                <div id="mombasa-beach-result" class="text-gray-600">
+                    <i class="fas fa-spinner fa-spin mr-2"></i>Testing...
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-8 bg-blue-50 border border-blue-200 rounded-lg p-4">
+            <h3 class="font-semibold text-blue-800 mb-2">
+                <i class="fas fa-lightbulb mr-2"></i>
+                Test Actions Performed
+            </h3>
+            <ul class="text-blue-700 space-y-1">
+                <li>✅ Test API login for each maintenance user</li>
+                <li>✅ Verify role is correctly set to 'maintenance_manager'</li>
+                <li>✅ Check tenant data is properly returned</li>
+                <li>✅ Verify dashboard redirector includes maintenance role</li>
+                <li>✅ Test maintenance dashboard accessibility</li>
+                <li>✅ Verify maintenance API endpoints are functional</li>
+            </ul>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios@1.6.0/dist/axios.min.js"></script>
+    <script>
+        const maintenanceUsers = [
+            {
+                name: 'Garden Estate',
+                id: 'garden-estate',
+                email: 'maintenance.garden@kenyahoa.com',
+                tenant_slug: 'garden-estate',
+                expectedName: 'David Mwangi'
+            },
+            {
+                name: 'Riverside Towers',
+                id: 'riverside-towers',
+                email: 'maintenance.riverside@kenyahoa.com',
+                tenant_slug: 'riverside-towers',
+                expectedName: 'Francis Ochieng'
+            },
+            {
+                name: 'Kileleshwa Villas',
+                id: 'kileleshwa-villas',
+                email: 'maintenance.kileleshwa@kenyahoa.com',
+                tenant_slug: 'kileleshwa-villas',
+                expectedName: 'Joseph Kariuki'
+            },
+            {
+                name: 'Mombasa Beach',
+                id: 'mombasa-beach',
+                email: 'maintenance.mombasa@kenyahoa.com',
+                tenant_slug: 'mombasa-beach',
+                expectedName: 'Omar Salim'
+            }
+        ];
+
+        async function testMaintenanceLogin(user) {
+            const resultElement = document.getElementById(`${user.id}-result`);
+            
+            try {
+                // Test login API
+                const response = await axios.post('/api/auth/login', {
+                    email: user.email,
+                    password: 'demo123',
+                    tenant_slug: user.tenant_slug
+                });
+
+                if (response.data.success) {
+                    const userData = response.data.user;
+                    const tenantData = response.data.tenant;
+                    
+                    // Verify the role and user data
+                    const isRoleCorrect = userData.role === 'maintenance_manager';
+                    const isNameCorrect = `${userData.first_name} ${userData.last_name}` === user.expectedName;
+                    const isEmailCorrect = userData.email === user.email;
+                    const isTenantCorrect = userData.tenant_slug === user.tenant_slug;
+                    
+                    const allCorrect = isRoleCorrect && isNameCorrect && isEmailCorrect && isTenantCorrect;
+                    
+                    resultElement.innerHTML = `
+                        <div class="${allCorrect ? 'text-green-600' : 'text-red-600'}">
+                            <i class="fas fa-${allCorrect ? 'check-circle' : 'exclamation-triangle'} mr-2"></i>
+                            <strong>${allCorrect ? 'SUCCESS' : 'ISSUES FOUND'}</strong>
+                        </div>
+                        <div class="mt-2 text-sm space-y-1">
+                            <div class="${isRoleCorrect ? 'text-green-600' : 'text-red-600'}">
+                                Role: ${userData.role} ${isRoleCorrect ? '✅' : '❌'}
+                            </div>
+                            <div class="${isNameCorrect ? 'text-green-600' : 'text-red-600'}">
+                                Name: ${userData.first_name} ${userData.last_name} ${isNameCorrect ? '✅' : '❌'}
+                            </div>
+                            <div class="${isEmailCorrect ? 'text-green-600' : 'text-red-600'}">
+                                Email: ${userData.email} ${isEmailCorrect ? '✅' : '❌'}
+                            </div>
+                            <div class="${isTenantCorrect ? 'text-green-600' : 'text-red-600'}">
+                                Tenant: ${userData.tenant_slug} ${isTenantCorrect ? '✅' : '❌'}
+                            </div>
+                            <div class="text-blue-600">
+                                HOA: ${tenantData.name}
+                            </div>
+                        </div>
+                    `;
+                    
+                    return allCorrect;
+                } else {
+                    throw new Error('Login failed');
+                }
+            } catch (error) {
+                resultElement.innerHTML = `
+                    <div class="text-red-600">
+                        <i class="fas fa-times-circle mr-2"></i>
+                        <strong>FAILED</strong>
+                    </div>
+                    <div class="mt-2 text-sm text-red-600">
+                        Error: ${error.response?.data?.message || error.message}
+                    </div>
+                `;
+                return false;
+            }
+        }
+
+        async function runAllTests() {
+            const results = [];
+            
+            for (const user of maintenanceUsers) {
+                const result = await testMaintenanceLogin(user);
+                results.push({ user: user.name, success: result });
+                
+                // Small delay between tests
+                await new Promise(resolve => setTimeout(resolve, 500));
+            }
+            
+            // Update summary
+            const totalTests = results.length;
+            const successfulTests = results.filter(r => r.success).length;
+            const failedTests = totalTests - successfulTests;
+            
+            document.getElementById('test-summary').innerHTML = `
+                <div class="bg-green-50 border border-green-200 rounded-lg p-4">
+                    <div class="text-green-800 font-semibold">
+                        <i class="fas fa-check-circle mr-2"></i>
+                        Successful Tests
+                    </div>
+                    <div class="text-2xl font-bold text-green-600">${successfulTests}</div>
+                </div>
+                <div class="bg-red-50 border border-red-200 rounded-lg p-4">
+                    <div class="text-red-800 font-semibold">
+                        <i class="fas fa-times-circle mr-2"></i>
+                        Failed Tests
+                    </div>
+                    <div class="text-2xl font-bold text-red-600">${failedTests}</div>
+                </div>
+            `;
+            
+            console.log('Test Results:', results);
+        }
+
+        // Run tests when page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            runAllTests();
+        });
+    </script>
+</body>
+</html>

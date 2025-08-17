@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-en="Super Admin Test - KenyaHOA Pro" data-sw="Jaribio la Msimamizi Mkuu - KenyaHOA Pro">Super Admin Test - KenyaHOA Pro</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 p-8">
+    <div class="max-w-6xl mx-auto">
+        <div class="bg-white rounded-lg shadow-lg p-6 mb-6">
+            <div class="flex justify-between items-center mb-6">
+                <h1 class="text-3xl font-bold text-gray-800" data-en="Super Admin System Test" data-sw="Jaribio la Mfumo wa Msimamizi Mkuu">
+                    Super Admin System Test
+                </h1>
+                <div class="flex space-x-2">
+                    <button id="lang-en" class="px-3 py-1 rounded text-sm bg-gray-200 hover:bg-gray-300">EN</button>
+                    <button id="lang-sw" class="px-3 py-1 rounded text-sm hover:bg-gray-200">SW</button>
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                <!-- Login Test Section -->
+                <div class="bg-purple-50 border border-purple-200 rounded-lg p-4">
+                    <h3 class="font-semibold text-purple-800 mb-3" data-en="Super Admin Login" data-sw="Kuingia kwa Msimamizi Mkuu">
+                        Super Admin Login
+                    </h3>
+                    <p class="text-purple-700 mb-3 text-sm" data-en="Test platform-level administration login" data-sw="Jaribu kuingia kwa utawala wa ngazi ya jukwaa">
+                        Test platform-level administration login
+                    </p>
+                    <button id="super-admin-login-btn" class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-md text-sm mb-2 w-full">
+                        <i class="fas fa-crown mr-2"></i>
+                        <span data-en="Login as Super Admin" data-sw="Ingia kama Msimamizi Mkuu">Login as Super Admin</span>
+                    </button>
+                    <p class="text-xs text-purple-600">Email: superadmin@kenyahoa.com</p>
+                </div>
+                
+                <!-- Platform Overview -->
+                <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                    <h3 class="font-semibold text-blue-800 mb-3" data-en="Platform Analytics" data-sw="Uchambuzi wa Jukwaa">
+                        Platform Analytics
+                    </h3>
+                    <div id="platform-stats" class="space-y-2 text-sm">
+                        <div class="text-blue-700">
+                            <span data-en="Click login to load platform analytics" data-sw="Bonyeza kuingia ili kupakia uchambuzi wa jukwaa">Click login to load platform analytics</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- API Test Buttons -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
+                <button id="test-analytics-btn" class="bg-green-600 hover:bg-green-700 text-white px-3 py-2 rounded text-sm" disabled>
+                    <i class="fas fa-chart-bar mr-1"></i>
+                    <span data-en="Test Analytics" data-sw="Jaribu Uchambuzi">Test Analytics</span>
+                </button>
+                <button id="test-hoas-btn" class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded text-sm" disabled>
+                    <i class="fas fa-building mr-1"></i>
+                    <span data-en="Test HOAs" data-sw="Jaribu HOA">Test HOAs</span>
+                </button>
+                <button id="test-users-btn" class="bg-orange-600 hover:bg-orange-700 text-white px-3 py-2 rounded text-sm" disabled>
+                    <i class="fas fa-users mr-1"></i>
+                    <span data-en="Test Users" data-sw="Jaribu Watumiaji">Test Users</span>
+                </button>
+                <button id="open-dashboard-btn" class="bg-purple-600 hover:bg-purple-700 text-white px-3 py-2 rounded text-sm" disabled>
+                    <i class="fas fa-tachometer-alt mr-1"></i>
+                    <span data-en="Open Dashboard" data-sw="Fungua Dashibodi">Open Dashboard</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Test Results -->
+        <div class="bg-white rounded-lg shadow-lg p-6 mb-6">
+            <h2 class="text-xl font-semibold mb-4" data-en="Platform Statistics" data-sw="Takwimu za Jukwaa">
+                Platform Statistics
+            </h2>
+            <div id="platform-overview" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+                <!-- Platform stats will be loaded here -->
+            </div>
+        </div>
+
+        <!-- HOAs Management -->
+        <div class="bg-white rounded-lg shadow-lg p-6 mb-6">
+            <h2 class="text-xl font-semibold mb-4" data-en="HOA Management" data-sw="Usimamizi wa HOA">
+                HOA Management
+            </h2>
+            <div id="hoas-list" class="space-y-3">
+                <!-- HOAs will be loaded here -->
+            </div>
+        </div>
+
+        <!-- Users Management -->
+        <div class="bg-white rounded-lg shadow-lg p-6">
+            <h2 class="text-xl font-semibold mb-4" data-en="User Management" data-sw="Usimamizi wa Watumiaji">
+                User Management
+            </h2>
+            <div id="users-summary" class="mb-4">
+                <!-- User summary will be loaded here -->
+            </div>
+            <div id="test-results" class="space-y-3">
+                <div class="text-blue-600">
+                    <i class="fas fa-info-circle mr-2"></i>
+                    <span data-en="Login as super admin to test platform management features" data-sw="Ingia kama msimamizi mkuu kujaribu vipengele vya usimamizi wa jukwaa">Login as super admin to test platform management features</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios@1.6.0/dist/axios.min.js"></script>
+    <script>
+        class SuperAdminTester {
+            constructor() {
+                this.currentLanguage = localStorage.getItem('kenyahoa_language') || 'en';
+                this.token = null;
+                this.init();
+            }
+
+            init() {
+                this.setupEventListeners();
+                this.updateLanguage();
+                this.updateLanguageButtons();
+            }
+
+            setupEventListeners() {
+                const langEn = document.getElementById('lang-en');
+                const langSw = document.getElementById('lang-sw');
+                
+                if (langEn) {
+                    langEn.addEventListener('click', () => this.switchLanguage('en'));
+                }
+                if (langSw) {
+                    langSw.addEventListener('click', () => this.switchLanguage('sw'));
+                }
+
+                // Test buttons
+                document.getElementById('super-admin-login-btn').addEventListener('click', () => this.testSuperAdminLogin());
+                document.getElementById('test-analytics-btn').addEventListener('click', () => this.testPlatformAnalytics());
+                document.getElementById('test-hoas-btn').addEventListener('click', () => this.testHoasManagement());
+                document.getElementById('test-users-btn').addEventListener('click', () => this.testUsersManagement());
+                document.getElementById('open-dashboard-btn').addEventListener('click', () => this.openSuperAdminDashboard());
+            }
+
+            switchLanguage(lang) {
+                this.currentLanguage = lang;
+                localStorage.setItem('kenyahoa_language', lang);
+                this.updateLanguage();
+                this.updateLanguageButtons();
+            }
+
+            updateLanguageButtons() {
+                const langEn = document.getElementById('lang-en');
+                const langSw = document.getElementById('lang-sw');
+                
+                if (langEn && langSw) {
+                    if (this.currentLanguage === 'en') {
+                        langEn.classList.add('bg-gray-300');
+                        langEn.classList.remove('hover:bg-gray-200');
+                        langSw.classList.remove('bg-gray-300');
+                        langSw.classList.add('hover:bg-gray-200');
+                    } else {
+                        langSw.classList.add('bg-gray-300');
+                        langSw.classList.remove('hover:bg-gray-200');
+                        langEn.classList.remove('bg-gray-300');
+                        langEn.classList.add('hover:bg-gray-200');
+                    }
+                }
+            }
+
+            updateLanguage() {
+                const elements = document.querySelectorAll('[data-en]');
+                elements.forEach(element => {
+                    const englishText = element.getAttribute('data-en');
+                    const swahiliText = element.getAttribute('data-sw');
+                    
+                    if (this.currentLanguage === 'sw' && swahiliText) {
+                        element.textContent = swahiliText;
+                    } else if (englishText) {
+                        element.textContent = englishText;
+                    }
+                });
+            }
+
+            async testSuperAdminLogin() {
+                const loginBtn = document.getElementById('super-admin-login-btn');
+                const originalText = loginBtn.innerHTML;
+                
+                try {
+                    loginBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Logging in...';
+                    loginBtn.disabled = true;
+                    
+                    const response = await axios.post('/api/auth/login', {
+                        email: 'superadmin@kenyahoa.com',
+                        password: 'demo123',
+                        tenant_slug: null
+                    });
+                    
+                    if (response.data.success) {
+                        const userData = response.data.user;
+                        this.token = response.data.token;
+                        
+                        // Store credentials for dashboard access
+                        localStorage.setItem('kenyahoa_token', response.data.token);
+                        localStorage.setItem('kenyahoa_user', JSON.stringify(response.data.user));
+                        localStorage.setItem('kenyahoa_tenant', JSON.stringify({ name: 'Platform Admin', slug: null }));
+                        
+                        this.addTestResult(`✅ Super Admin login successful: ${userData.first_name} ${userData.last_name} (${userData.role})`, 'success');
+                        
+                        // Enable other test buttons
+                        this.enableTestButtons();
+                        
+                        // Auto-load platform analytics
+                        setTimeout(() => this.testPlatformAnalytics(), 1000);
+                    } else {
+                        throw new Error('Login failed');
+                    }
+                } catch (error) {
+                    this.addTestResult(`❌ Super Admin login failed: ${error.message}`, 'error');
+                } finally {
+                    loginBtn.innerHTML = originalText;
+                    loginBtn.disabled = false;
+                }
+            }
+
+            enableTestButtons() {
+                ['test-analytics-btn', 'test-hoas-btn', 'test-users-btn', 'open-dashboard-btn'].forEach(id => {
+                    document.getElementById(id).disabled = false;
+                });
+            }
+
+            async testPlatformAnalytics() {
+                if (!this.token) {
+                    this.addTestResult('❌ Please login first', 'error');
+                    return;
+                }
+
+                try {
+                    const response = await axios.get('/api/platform/analytics', {
+                        headers: { 'Authorization': `Bearer ${this.token}` }
+                    });
+
+                    if (response.data.success) {
+                        const analytics = response.data.platform_overview;
+                        
+                        // Update platform stats display
+                        this.updatePlatformStatsDisplay(analytics);
+                        
+                        this.addTestResult(`✅ Platform Analytics loaded: ${analytics.total_hoas} HOAs, ${analytics.total_residents.toLocaleString()} users, KES ${analytics.total_revenue.toLocaleString()} revenue`, 'success');
+                    }
+                } catch (error) {
+                    this.addTestResult(`❌ Platform Analytics failed: ${error.message}`, 'error');
+                }
+            }
+
+            async testHoasManagement() {
+                if (!this.token) {
+                    this.addTestResult('❌ Please login first', 'error');
+                    return;
+                }
+
+                try {
+                    const response = await axios.get('/api/platform/hoas', {
+                        headers: { 'Authorization': `Bearer ${this.token}` }
+                    });
+
+                    if (response.data.success) {
+                        const hoas = response.data.hoas;
+                        
+                        // Update HOAs display
+                        this.updateHoasDisplay(hoas);
+                        
+                        this.addTestResult(`✅ HOAs Management loaded: ${hoas.length} HOAs found`, 'success');
+                    }
+                } catch (error) {
+                    this.addTestResult(`❌ HOAs Management failed: ${error.message}`, 'error');
+                }
+            }
+
+            async testUsersManagement() {
+                if (!this.token) {
+                    this.addTestResult('❌ Please login first', 'error');
+                    return;
+                }
+
+                try {
+                    const response = await axios.get('/api/platform/users', {
+                        headers: { 'Authorization': `Bearer ${this.token}` }
+                    });
+
+                    if (response.data.success) {
+                        const users = response.data.users;
+                        const usersByRole = response.data.users_by_role;
+                        
+                        // Update users display
+                        this.updateUsersDisplay(users, usersByRole);
+                        
+                        this.addTestResult(`✅ Users Management loaded: ${users.length} total users`, 'success');
+                    }
+                } catch (error) {
+                    this.addTestResult(`❌ Users Management failed: ${error.message}`, 'error');
+                }
+            }
+
+            openSuperAdminDashboard() {
+                if (!this.token) {
+                    this.addTestResult('❌ Please login first', 'error');
+                    return;
+                }
+
+                window.open('/dashboard-super-admin.html', '_blank');
+                this.addTestResult('🔗 Super Admin Dashboard opened in new tab', 'info');
+            }
+
+            updatePlatformStatsDisplay(analytics) {
+                const container = document.getElementById('platform-overview');
+                
+                container.innerHTML = `
+                    <div class="bg-purple-50 p-4 rounded-lg">
+                        <div class="text-2xl font-bold text-purple-600">${analytics.total_hoas}</div>
+                        <div class="text-sm text-purple-600">Total HOAs</div>
+                        <div class="text-xs text-green-600">+${analytics.monthly_growth.hoas}% growth</div>
+                    </div>
+                    <div class="bg-blue-50 p-4 rounded-lg">
+                        <div class="text-2xl font-bold text-blue-600">${analytics.total_residents.toLocaleString()}</div>
+                        <div class="text-sm text-blue-600">Total Users</div>
+                        <div class="text-xs text-green-600">+${analytics.monthly_growth.users}% growth</div>
+                    </div>
+                    <div class="bg-green-50 p-4 rounded-lg">
+                        <div class="text-2xl font-bold text-green-600">KES ${analytics.total_revenue.toLocaleString()}</div>
+                        <div class="text-sm text-green-600">Monthly Revenue</div>
+                        <div class="text-xs text-green-600">+${analytics.monthly_growth.revenue}% growth</div>
+                    </div>
+                    <div class="bg-orange-50 p-4 rounded-lg">
+                        <div class="text-2xl font-bold text-orange-600">${analytics.total_properties.toLocaleString()}</div>
+                        <div class="text-sm text-orange-600">Total Properties</div>
+                        <div class="text-xs text-gray-600">${analytics.occupancy_rate}% occupied</div>
+                    </div>
+                `;
+            }
+
+            updateHoasDisplay(hoas) {
+                const container = document.getElementById('hoas-list');
+                
+                container.innerHTML = hoas.map(hoa => `
+                    <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-building text-blue-600"></i>
+                            </div>
+                            <div>
+                                <div class="font-semibold text-gray-900">${hoa.name}</div>
+                                <div class="text-sm text-gray-500">${hoa.location} • ${hoa.subscription_plan}</div>
+                                <div class="text-xs text-gray-400">${hoa.total_properties} properties, ${hoa.total_users} users</div>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <div class="font-semibold text-gray-900">KES ${hoa.monthly_revenue.toLocaleString()}</div>
+                            <div class="text-sm text-${hoa.status === 'Active' ? 'green' : 'red'}-600">${hoa.status}</div>
+                            <div class="text-xs text-gray-500">${hoa.occupancy_rate}% occupied</div>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            updateUsersDisplay(users, usersByRole) {
+                const summaryContainer = document.getElementById('users-summary');
+                
+                summaryContainer.innerHTML = `
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        <div class="bg-purple-50 p-3 rounded-lg">
+                            <div class="text-lg font-bold text-purple-600">${usersByRole.super_admin}</div>
+                            <div class="text-sm text-purple-600">Super Admins</div>
+                        </div>
+                        <div class="bg-blue-50 p-3 rounded-lg">
+                            <div class="text-lg font-bold text-blue-600">${usersByRole.hoa_admin}</div>
+                            <div class="text-sm text-blue-600">HOA Admins</div>
+                        </div>
+                        <div class="bg-green-50 p-3 rounded-lg">
+                            <div class="text-lg font-bold text-green-600">${usersByRole.resident_owner + usersByRole.resident_tenant}</div>
+                            <div class="text-sm text-green-600">Residents</div>
+                        </div>
+                        <div class="bg-orange-50 p-3 rounded-lg">
+                            <div class="text-lg font-bold text-orange-600">${usersByRole.maintenance_manager}</div>
+                            <div class="text-sm text-orange-600">Maintenance</div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            addTestResult(message, type) {
+                const resultsContainer = document.getElementById('test-results');
+                const resultDiv = document.createElement('div');
+                
+                const colorClass = {
+                    'success': 'text-green-600',
+                    'error': 'text-red-600',
+                    'info': 'text-blue-600'
+                }[type] || 'text-gray-600';
+                
+                resultDiv.className = `${colorClass} text-sm`;
+                resultDiv.innerHTML = `<i class="fas fa-${type === 'success' ? 'check' : type === 'error' ? 'times' : 'info'}-circle mr-2"></i>${message}`;
+                
+                resultsContainer.appendChild(resultDiv);
+                
+                // Scroll to show the new result
+                resultDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
+        }
+
+        // Initialize the super admin tester
+        document.addEventListener('DOMContentLoaded', () => {
+            new SuperAdminTester();
+        });
+    </script>
+</body>
+</html>

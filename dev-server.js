@@ -17,15 +17,22 @@ const server = http.createServer((req, res) => {
     return;
   }
   
-  // Handle static files
-  let filePath = path.join(__dirname, 'dist', req.url === '/' ? 'index.html' : req.url);
+  // Handle specific routes
+  let filePath;
   
-  // If file doesn't exist, try to serve from public/static
-  if (!fs.existsSync(filePath) && req.url.startsWith('/static/')) {
+  if (req.url === '/') {
+    filePath = path.join(__dirname, 'dist', 'index.html');
+  } else if (req.url === '/dashboard' || req.url === '/dashboard/') {
+    filePath = path.join(__dirname, 'dist', 'dashboard.html');
+  } else if (req.url.startsWith('/static/')) {
+    // Serve static files from public directory
     filePath = path.join(__dirname, 'public', req.url);
+  } else {
+    // Try to serve from dist directory
+    filePath = path.join(__dirname, 'dist', req.url);
   }
   
-  // Default to main page for SPA routing
+  // If file doesn't exist, default to main page for SPA routing
   if (!fs.existsSync(filePath)) {
     filePath = path.join(__dirname, 'dist', 'index.html');
   }

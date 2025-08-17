@@ -3,7 +3,7 @@ module.exports = {
   apps: [
     {
       name: 'kenyahoa-pro',
-      script: 'dev-server.js',
+      script: 'dev-server-contextual.js',
       cwd: '/home/user/webapp',
       env: {
         NODE_ENV: 'development',

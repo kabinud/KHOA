@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Super Admin Login</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 p-8">
+    <div class="max-w-md mx-auto bg-white rounded-lg shadow-md p-6">
+        <h1 class="text-2xl font-bold mb-6 text-center">Super Admin Login Test</h1>
+        
+        <div id="result" class="mb-4"></div>
+        
+        <button id="testLogin" class="w-full bg-purple-600 hover:bg-purple-700 text-white py-2 px-4 rounded">
+            Test Super Admin Login
+        </button>
+        
+        <div class="mt-4 p-4 bg-gray-50 rounded text-sm">
+            <p><strong>Email:</strong> superadmin@kenyahoa.com</p>
+            <p><strong>Password:</strong> demo123</p>
+            <p><strong>Role:</strong> Super Admin</p>
+        </div>
+    </div>
+
+    <script>
+        async function testSuperAdminLogin() {
+            const resultDiv = document.getElementById('result');
+            
+            try {
+                resultDiv.innerHTML = '<div class="p-3 bg-blue-50 text-blue-800 rounded">Testing login...</div>';
+                
+                const response = await fetch('/api/auth/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        email: 'superadmin@kenyahoa.com',
+                        password: 'demo123'
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    resultDiv.innerHTML = `
+                        <div class="p-3 bg-green-50 text-green-800 rounded">
+                            <h3 class="font-semibold">✅ Login Successful!</h3>
+                            <p><strong>User:</strong> ${data.user.first_name} ${data.user.last_name}</p>
+                            <p><strong>Email:</strong> ${data.user.email}</p>
+                            <p><strong>Role:</strong> ${data.user.role}</p>
+                            <p><strong>Token:</strong> ${data.token.substring(0, 20)}...</p>
+                        </div>
+                    `;
+                } else {
+                    resultDiv.innerHTML = `
+                        <div class="p-3 bg-red-50 text-red-800 rounded">
+                            <h3 class="font-semibold">❌ Login Failed</h3>
+                            <p>${data.message}</p>
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `
+                    <div class="p-3 bg-red-50 text-red-800 rounded">
+                        <h3 class="font-semibold">❌ Error</h3>
+                        <p>${error.message}</p>
+                    </div>
+                `;
+            }
+        }
+        
+        document.getElementById('testLogin').addEventListener('click', testSuperAdminLogin);
+        
+        // Auto-test on page load
+        window.addEventListener('load', testSuperAdminLogin);
+    </script>
+</body>
+</html>

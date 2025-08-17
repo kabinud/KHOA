@@ -140,10 +140,14 @@ app.get('/', (c) => {
                 <p class="text-xl md:text-2xl mb-8 max-w-3xl mx-auto" data-en="Streamline your homeowner association with M-Pesa payments, maintenance tracking, and resident communication." data-sw="Rahisisha jumuiya yako ya wenyemalezi wa nyumba kwa malipo ya M-Pesa, ufuatiliaji wa matengenezo, na mawasiliano ya wakazi.">
                     Streamline your homeowner association with M-Pesa payments, maintenance tracking, and resident communication.
                 </p>
-                <div class="space-x-4">
+                <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
                     <button id="getStartedBtn" class="bg-kenya-orange hover:bg-orange-600 text-white px-8 py-3 rounded-lg font-semibold text-lg transition duration-200">
                         <i class="fas fa-rocket mr-2"></i>
                         <span data-en="Get Started Free" data-sw="Anza Bila Malipo">Get Started Free</span>
+                    </button>
+                    <button id="demo-login" class="bg-green-600 hover:bg-green-700 text-white px-8 py-3 rounded-lg font-semibold text-lg transition duration-200">
+                        <i class="fas fa-play-circle mr-2"></i>
+                        <span data-en="Try Demo HOAs" data-sw="Jaribu Demo HOAs">Try Demo HOAs</span>
                     </button>
                     <button id="learnMoreBtn" class="border-2 border-white text-white hover:bg-white hover:text-primary-600 px-8 py-3 rounded-lg font-semibold text-lg transition duration-200">
                         <i class="fas fa-info-circle mr-2"></i>
@@ -403,7 +407,7 @@ app.get('/', (c) => {
         <script src="https://cdn.jsdelivr.net/npm/axios@1.6.0/dist/axios.min.js"></script>
         
         <!-- Custom JavaScript -->
-        <script src="/static/app.js"></script>
+        <script src="/static/app-seeded.js"></script>
     </body>
     </html>
   `);
